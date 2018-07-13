@@ -1,0 +1,34 @@
+<!doctype html>
+<link rel="stylesheet" type="text/css" href="../../css/browser_action.css">	
+
+<div id="mainPopup">
+
+<div id="app">
+    <h1>Fan<span>tag</span>ulus</h1>
+    <h3>Tag the Web!</h3>
+    <h4>Url</h4>
+    <input class="text url-input" type="text" v-model="url">
+    <h4>Description</h4>
+    <input class="text" type="text" v-model="description">
+    <h4>Tags</h4>
+    <div class="tags-input">
+        <span class="tag" v-for="(tag, index) in tags">
+            {{ tag.name }}
+            <span class="remove" @click="removeTag(index)">x</span>
+        </span>
+        <input type="text" placeholder="type a tag and hit enter" v-model="newTag.name" v-on:keydown.enter="addTag()">
+    </div>
+
+    <h4>Clipping</h4>
+    <textarea>{{ clipping }}</textarea>
+    <div class="button" @click="pasteSelection">Get clipping</div>
+
+    <transition name="fade">
+        <div class="message" v-if="message"><span>{{ message }}</span></div>
+    </transition>
+</div>
+
+</div>
+
+<script type="text/javascript" src="../../js/vue.2.5.16.min.js"></script>
+<script type="text/javascript" src="../../js/browser_action.js"></script>
