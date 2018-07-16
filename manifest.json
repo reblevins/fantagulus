@@ -22,11 +22,11 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
+    "storage",
     "bookmarks",
     "clipboardRead",
     "clipboardWrite",
     "contextMenus",
-    // "fileBrowserHandler",
     "tabs",
     "*://*/*"
   ],

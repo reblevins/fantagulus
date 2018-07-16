@@ -7,12 +7,12 @@
     <h1>Fan<span>tag</span>ulus</h1>
     <h3>Tag the Web!</h3>
     <h4>Url</h4>
-    <input class="text url-input" type="text" v-model="url">
+    <input class="text url-input" type="text" v-model="bookmark.url">
     <h4>Description</h4>
-    <input class="text" type="text" v-model="description">
+    <input class="text" type="text" v-model="bookmark.description">
     <h4>Tags</h4>
     <div class="tags-input">
-        <span class="tag" v-for="(tag, index) in tags">
+        <span class="tag" v-for="(tag, index) in bookmark.tags">
             {{ tag.name }}
             <span class="remove" @click="removeTag(index)">x</span>
         </span>
@@ -20,8 +20,9 @@
     </div>
 
     <h4>Clipping</h4>
-    <textarea>{{ clipping }}</textarea>
+    <textarea v-model="bookmark.clipping"></textarea>
     <div class="button" @click="pasteSelection">Get clipping</div>
+    <div class="button" @click="saveBookmark">Save Bookmark</div>
 
     <transition name="fade">
         <div class="message" v-if="message"><span>{{ message }}</span></div>
@@ -31,4 +32,5 @@
 </div>
 
 <script type="text/javascript" src="../../js/vue.2.5.16.min.js"></script>
+<script type="text/javascript" src="../../js/md5.js"></script>
 <script type="text/javascript" src="../../js/browser_action.js"></script>
