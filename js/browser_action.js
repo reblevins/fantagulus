@@ -3,7 +3,7 @@ var app = new Vue({
     data: {
         bookmark: {
             bookmark_id: null,
-            url: "https://stackoverflow.com/questions/14349263/creating-a-chrome-extension-which-takes-highlighted-text-on-the-page-and-inserts#answer-14351458",
+            url: document.location.url,
             tags: [
                 { name: 'tag' }
             ],
@@ -16,17 +16,20 @@ var app = new Vue({
         message: null
     },
     created() {
-        chrome.storage.onChanged.addListener(function(changes, namespace) {
-            for (key in changes) {
-                var storageChange = changes[key];
-                console.log('Storage key "%s" in namespace "%s" changed. ' +
-                          'Old value was "%s", new value is "%s".',
-                          key,
-                          namespace,
-                          storageChange.oldValue,
-                          storageChange.newValue);
-            }
-        })
+        // chrome.storage.onChanged.addListener(function(changes, namespace) {
+        //     for (key in changes) {
+        //         var storageChange = changes[key];
+        //         console.log('Storage key "%s" in namespace "%s" changed. ' +
+        //                   'Old value was "%s", new value is "%s".',
+        //                   key,
+        //                   namespace,
+        //                   storageChange.oldValue,
+        //                   storageChange.newValue);
+        //     }
+        // })
+        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+            this.bookmark.url = tabs[0].url;
+        });
     },
     watch: {
         message(newVal) {
@@ -67,9 +70,15 @@ var app = new Vue({
             let url = this.bookmark.url.split("#")
             this.bookmark.bookmark_id = md5(url[0])
 
-            chrome.storage.sync.get({ key: value }, function() {
-                console.log('Value is set to ' + value);
-            })
+            console.log(this.bookmark)
+
+            // chrome.storage.sync.get({ key: value }, function() {
+            //     console.log('Value is set to ' + value);
+            // })
+            chrome.runtime.sendMessage({ message: 'open', data: this.bookmark }, (response) => {
+                if (!response.success)
+                    handleError(url);
+            });
         }
     }
 })
