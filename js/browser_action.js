@@ -42,11 +42,11 @@ var app = new Vue({
     },
     methods: {
         addTag: function() {
-            this.tags.push(this.newTag)
+            this.bookmark.tags.push(this.newTag)
             this.newTag = { name: null }
         },
         removeTag(index) {
-            this.tags.splice(index, 1)
+            this.bookmark.tags.splice(index, 1)
         },
         pasteSelection() {
             chrome.tabs.query({ active:true, windowId: chrome.windows.WINDOW_ID_CURRENT }, (tab) => {

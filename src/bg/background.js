@@ -16,10 +16,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			active: true
 		}, (tab) => {
 			chrome.runtime.onConnect.addListener((port) => {
-				console.log(port)
-				if (port.name == "ready") {
-					port.postMessage({ data: request.data })
-				}
+				port.onMessage.addListener((msg) => {
+					if (msg.message == "ready") {
+						port.postMessage({ data: request.data })
+					}
+					if (msg.message == "done") {
+						console.log(msg)
+					}
+				})
 			})
 		})
 	}

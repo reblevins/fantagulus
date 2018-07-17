@@ -9,6 +9,7 @@ chrome.extension.sendMessage({}, function(response) {
 			// console.log()
 			
 			var port = chrome.runtime.connect({ name: "ready" });
+			port.postMessage({ message: "ready" })
 			port.onMessage.addListener((msg) => {
 				console.log(msg)
 				if (msg.data) {
@@ -37,35 +38,23 @@ chrome.extension.sendMessage({}, function(response) {
 						html += `<blockquote>${msg.data.clipping}</blockquote>`
 					}
 					container.innerHTML = html
-					// container.dispatchEvent(new Event('change'))
-					var customEvent;
-					var type = 'keydown';
-					var bubbles = true;
-					var cancelable = true;
-					var view = window;
-					var ctrlKey = false;
-					var altKey = false;
-					var shiftKey = false;
-					var metaKey = false;
-					var keyCode = 40;
-					var charCode = 40;
-
-					container.createEvent("KeyEvents")
-					customEvent.initKeyEvent(type, bubbles, cancelable, view, ctrlKey,
-						        altKey, shiftKey, metaKey, keyCode, charCode);
 
 					var title = document.getElementById("doc-title")
 					title.innerHTML = msg.data.description
 
+					container.dispatchEvent(new KeyboardEvent('keyup',{'which': 16}))
+					container.dispatchEvent(new Event('change'))
+					title.focus()
+					title.dispatchEvent(new KeyboardEvent('keyup',{'which': 16}))
+					title.dispatchEvent(new Event('change'))
+
+					// port = chrome.runtime.connect({ name: "done" });
+					setTimeout(() => {
+						port.postMessage({ message: "done", url: document.location })
+					}, 1000)
 				}
 			})
 
-			// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-			// 	console.log(request)
-			//     if (request.data) {
-			//     	container.innerHTML = request.data
-			//     }
-			//   });
 		}		
 
 	}
