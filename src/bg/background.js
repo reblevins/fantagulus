@@ -17,12 +17,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		}, (tab) => {
 			chrome.runtime.onConnect.addListener((port) => {
 				port.onMessage.addListener((msg) => {
+					console.log(msg)
 					if (msg.message == "ready") {
 						port.postMessage({ data: request.data })
 					}
 					if (msg.message == "done") {
 						console.log(msg)
 					}
+					// if (msg.message == "getSelection") {
+					// 	console.log("getSelection")
+					// 	port.postMessage(msg)
+					// }
+					// if (msg.message == "selection") {
+					// 	console.log("selection")
+					// 	port.postMessage(msg)
+					// }
 				})
 			})
 		})

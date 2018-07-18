@@ -1,18 +1,15 @@
 chrome.extension.sendMessage({}, function(response) {
 	var readyStateCheckInterval = setInterval(function() {
-	if (document.readyState === "complete") {
-		clearInterval(readyStateCheckInterval);
+		if (document.readyState === "complete") {
+			clearInterval(readyStateCheckInterval);
 
-		if (document.location.host == "itty.bitty.site") {
-			console.log("found")
-			var container = document.getElementById("content")
-			// console.log()
-			
 			var port = chrome.runtime.connect({ name: "ready" });
 			port.postMessage({ message: "ready" })
 			port.onMessage.addListener((msg) => {
 				console.log(msg)
-				if (msg.data) {
+				if (document.location.host == "itty.bitty.site" && msg.data) {
+					console.log("found")
+					var container = document.getElementById("content")
 					let html = `
 						<style>
 						.tag {
@@ -23,20 +20,20 @@ chrome.extension.sendMessage({}, function(response) {
 						    margin: 2px 2px;
 						    top: 6px;
 						    border-radius: 4px; }
-						</style>
-						<h1>${msg.data.description}</h1>
-						<a href="${msg.data.url}" id="url">${msg.data.url}<a>
-					`
+						</style>\n
+						<h1>${msg.data.description}</h1>\n
+						<a href="` + msg.data.url + `" id="url">` + msg.data.url + `</a>\n`
 					if (msg.data.tags.length > 0) {
 						html += `<div id="tags">`
 						for (var i = 0; i < msg.data.tags.length; i++) {
 							html += `<span class="tag">${msg.data.tags[i].name}</span>`
 						}
-						html += `</div>`
+						html += `</div>\n`
 					}
 					if (msg.data.clipping) {
 						html += `<blockquote>${msg.data.clipping}</blockquote>`
 					}
+					console.log(html)
 					container.innerHTML = html
 
 					var title = document.getElementById("doc-title")
@@ -48,23 +45,20 @@ chrome.extension.sendMessage({}, function(response) {
 					title.dispatchEvent(new KeyboardEvent('keyup',{'which': 16}))
 					title.dispatchEvent(new Event('change'))
 
-					// port = chrome.runtime.connect({ name: "done" });
 					setTimeout(() => {
 						port.postMessage({ message: "done", url: document.location })
 					}, 1000)
 				}
+				if (msg.message && msg.message == "getSelection") {
+					port.postMessage({ message: "selection", data: window.getSelection().toString() });
+				}
 			})
-
-		}		
-
-	}
+			chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+			  	if (request.message == "getSelection")
+			    	sendResponse({ data: window.getSelection().toString() });
+			  	else
+			    	sendResponse({}); // snub them.
+			});
+		}
 	}, 10);
-});
-
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log(request, sender)
-  	if (request.method == "getSelection")
-    	sendResponse({ data: window.getSelection().toString() });
-  	else
-    	sendResponse({}); // snub them.
 });

@@ -49,12 +49,12 @@ var app = new Vue({
             this.bookmark.tags.splice(index, 1)
         },
         pasteSelection() {
+            console.log("getting selection")
+            
             chrome.tabs.query({ active:true, windowId: chrome.windows.WINDOW_ID_CURRENT }, (tab) => {
-                console.log(tab)
-                chrome.tabs.sendMessage(tab[0].id, { method: "getSelection" }, (response) => {
-                    console.log(response)
+                chrome.tabs.sendMessage(tab[0].id, { message: "getSelection" }, (response) => {
                     if (response && response.data) {
-                        this.clipping = response.data;
+                        this.bookmark.clipping = response.data;
                     } else {
                         this.message = "Please make a selection first."
                     }
@@ -69,6 +69,7 @@ var app = new Vue({
 
             let url = this.bookmark.url.split("#")
             this.bookmark.bookmark_id = md5(url[0])
+            this.bookmark.url = url[0]
 
             console.log(this.bookmark)
 
