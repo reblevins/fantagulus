@@ -54,10 +54,12 @@ chrome.extension.sendMessage({}, function(response) {
 				}
 			})
 			chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-			  	if (request.message == "getSelection")
+			  	if (request.message == "getSelection") {
+			  		console.log("getSelection", window.getSelection().toString())
 			    	sendResponse({ data: window.getSelection().toString() });
-			  	else
+			  	} else {
 			    	sendResponse({}); // snub them.
+			  	}
 			});
 		}
 	}, 10);
