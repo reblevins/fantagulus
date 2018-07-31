@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript" src="background.js"></script>
+<link rel="stylesheet" type="text/css" href="../../css/browser_action.css">	
 </head>
+<body>
+
+<div id="app" class="bookmarks">
+	<h1>Fan<span>tag</span>ulus</h1>
+    <h3>Tag the Web!</h3>
+	
+	<h3>My Bookmarks</h3>
+    <ul>
+        <li class="bookmark" v-for="(bookmark, index) in bookmarks">
+            <h4>{{ bookmark.title }}</h4>
+            <a :href="bookmark.url">{{ bookmark.url }}</a>
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript" src="../../js/vue.2.5.16.min.js"></script>
+<script type="text/javascript" src="../../js/moment.min.js"></script>
+<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script type="text/javascript" src="background.js"></script>
+</body>
 </html>

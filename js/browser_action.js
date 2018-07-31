@@ -2,18 +2,20 @@ var app = new Vue({
     el: '#app',
     data: {
         bookmark: {
-            bookmark_id: null,
+            // bookmarkId: null,
             url: document.location.url,
             tags: [
                 { name: 'tag' }
             ],
-            description: null,
+            title: null,
             clipping: null
         },
+        bookmarks: [],
         newTag: {
             name: null
         },
-        message: null
+        message: null,
+        port: null
     },
     created() {
         // chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -27,8 +29,29 @@ var app = new Vue({
         //                   storageChange.newValue);
         //     }
         // })
+        this.port = chrome.runtime.connect({ name: "popup" })
+        console.log(this.port)
+        this.port.postMessage({ msg: "get_all" })
+        this.port.onMessage.addListener((obj) => {
+            if (obj.bookmarks) {
+                console.log(obj.bookmarks)
+                // obj.bookmarks.forEach((bookmark) => {
+                //     this.bookmarks.push(bookmark)
+                // })
+                this.bookmarks = obj.bookmarks
+                console.log(this.bookmarks)
+            }
+            if (obj.msg == 'bookmark_saved') {
+
+            }
+            if (obj.bookmark) {
+                this.bookmark = bookmark
+            }
+        });
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
             this.bookmark.url = tabs[0].url;
+
+            this.port.postMessage({ msg: "get_bookmark", bookmark: bookmark })
         });
     },
     watch: {
@@ -61,6 +84,9 @@ var app = new Vue({
                 })
             })
         },
+        openBookmarks() {
+            chrome.tabs.create({url: chrome.extension.getURL('src/bg/background.html')});
+        },
         saveBookmark() {
             if (!this.bookmark.url) {
                 this.message = "URL is a required field."
@@ -73,13 +99,15 @@ var app = new Vue({
 
             console.log(this.bookmark)
 
+            this.port.postMessage({ msg: 'put', bookmark: this.bookmark })
+
             // chrome.storage.sync.get({ key: value }, function() {
             //     console.log('Value is set to ' + value);
             // })
-            chrome.runtime.sendMessage({ message: 'open', data: this.bookmark }, (response) => {
-                if (!response.success)
-                    handleError(url);
-            });
+            // chrome.runtime.sendMessage({ message: 'open', data: this.bookmark }, (response) => {
+            //     if (!response.success)
+            //         handleError(url);
+            // });
         }
     }
 })

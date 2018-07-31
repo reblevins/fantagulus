@@ -9,7 +9,7 @@
     <h4>Url</h4>
     <input class="text url-input" type="text" v-model="bookmark.url">
     <h4>Description</h4>
-    <input class="text" type="text" v-model="bookmark.description">
+    <input class="text" type="text" v-model="bookmark.title">
     <h4>Tags</h4>
     <div class="tags-input">
         <span class="tag" v-for="(tag, index) in bookmark.tags">
@@ -24,6 +24,8 @@
     <div class="button" @click="pasteSelection">Get clipping</div>
     <div class="button" @click="saveBookmark">Save Bookmark</div>
 
+    <div class="button" @click="openBookmarks">My Bookmarks</div>
+
     <transition name="fade">
         <div class="message" v-if="message"><span>{{ message }}</span></div>
     </transition>
@@ -33,4 +35,6 @@
 
 <script type="text/javascript" src="../../js/vue.2.5.16.min.js"></script>
 <script type="text/javascript" src="../../js/md5.js"></script>
+<script type="text/javascript" src="../../js/moment.min.js"></script>
+<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 <script type="text/javascript" src="../../js/browser_action.js"></script>

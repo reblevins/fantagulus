@@ -8,6 +8,9 @@
 #app {
   position: relative;
   margin: 1em; }
+  #app.bookmarks {
+    margin: 0 auto;
+    width: 60%; }
 
 h1 span {
   color: #F72459; }
@@ -86,6 +89,16 @@ textarea {
     border-radius: 4px; }
 
 /********************/
+/*  Bookmarks        /
+/********************/
+li.bookmark {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center; }
+  li.bookmark h4 {
+    margin: 0; }
+
+/********************/
 /*  Transitions      /
 /********************/
 .fade-enter-active, .fade-leave-active {
@@ -93,3 +106,5 @@ textarea {
 
 .fade-enter, .fade-leave-to {
   opacity: 0; }
+
+/*# sourceMappingURL=browser_action.css.map */

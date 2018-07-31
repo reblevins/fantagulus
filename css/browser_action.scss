@@ -10,6 +10,11 @@ $borderRadius: 4px;
 #app {
     position: relative;
     margin: 1em;
+
+    &.bookmarks {
+        margin: 0 auto;
+        width: 60%;
+    }
 }
 h1 {
     // text-transform: uppercase;
@@ -101,6 +106,18 @@ textarea {
         color: white;
         border-radius: $borderRadius;
     }
+}
+
+/********************/
+/*  Bookmarks        /
+/********************/
+
+li.bookmark {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+
+    h4 { margin: 0; }
 }
 
 /********************/
