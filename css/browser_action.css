@@ -94,9 +94,19 @@ textarea {
 li.bookmark {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  align-items: center; }
+  align-items: center;
+  margin: 1em 0;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding: 1.2em;
+  background: #f7f7f7; }
   li.bookmark h4 {
     margin: 0; }
+
+.controls svg {
+  width: 20px; }
+  .controls svg path {
+    fill: white; }
 
 /********************/
 /*  Transitions      /
