@@ -100,11 +100,21 @@ var app = new Vue({
             name: null
         },
         message: null,
-        port: null
+        port: null,
+        confirmDelete: null,
     },
     created() {
     	db.bookmarks.toArray().then(bookmarks => {
 			this.bookmarks = bookmarks
 		})
+    },
+    methods: {
+    	editBookmark(bookmark) {
+    		this.bookmark = bookmark
+    	},
+    	deleteBookmark(bookmark) {
+    		console.log("deleteBookmark")
+    		console.log(bookmark)
+    	}
     }
 })

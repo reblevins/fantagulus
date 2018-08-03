@@ -37,7 +37,7 @@ h4 {
         color: #aaa;
     }
 }
-.button {
+.pointer {
     cursor: pointer;
 }
 input.text, textarea {
@@ -55,12 +55,22 @@ textarea {
     min-height: 7em;
 }
 .button {
+    cursor: pointer;
     background: #21e09e;
     color: white;
     text-transform: uppercase;
     display: inline-block;
     padding: 0.6em;
     border-radius: $borderRadius;
+
+    &.danger {
+        background: #F72459;
+    }
+}
+.button-small {
+    font-size: 0.5em;
+    max-width: 4em;
+    text-align: center;
 }
 .tags-input {
     width: 97%;
@@ -112,9 +122,14 @@ textarea {
 /*  Bookmarks        /
 /********************/
 
+ul {
+    padding: 0;
+}
+
 li.bookmark {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 2fr 5fr 0.5fr;
     align-items: center;
     margin: 1em 0;
     border: 1px solid lightgray;
@@ -129,7 +144,29 @@ li.bookmark {
     width: 20px;
 
     path {
-        fill: white;
+        fill: #666;
+    }
+}
+
+span.confirm-delete {
+    position: absolute;
+    width: 97%;
+    background: rgba(247, 247, 247, 0.9);
+    height: 100%;
+    right: 0;
+    text-align: right;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr;
+    margin-right: 1.5em;
+
+    .inner {
+        width: 50%;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 6fr 1fr 1fr;
+        grid-gap: 0.5em;
+        justify-self: right;
     }
 }
 
