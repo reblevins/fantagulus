@@ -31,8 +31,8 @@ var app = new Vue({
         // })
         this.port = chrome.runtime.connect({ name: "popup" })
         console.log(this.port)
-        this.port.postMessage({ msg: "get_all" })
         this.port.onMessage.addListener((obj) => {
+            console.log(obj)
             if (obj.bookmarks) {
                 console.log(obj.bookmarks)
                 // obj.bookmarks.forEach((bookmark) => {
@@ -45,13 +45,15 @@ var app = new Vue({
 
             }
             if (obj.bookmark) {
-                this.bookmark = bookmark
+                this.bookmark = obj.bookmark
             }
         });
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
-            this.bookmark.url = tabs[0].url;
+            console.log(tabs[0])
+            this.bookmark.url = this.sanitizeUrl(tabs[0].url)
+            this.bookmark.title = tabs[0].title
 
-            this.port.postMessage({ msg: "get_bookmark", bookmark: bookmark })
+            this.port.postMessage({ msg: "get_bookmark", bookmark: this.bookmark })
         });
     },
     watch: {
@@ -74,8 +76,10 @@ var app = new Vue({
         pasteSelection() {
             console.log("getting selection")
             
-            chrome.tabs.query({ active:true, windowId: chrome.windows.WINDOW_ID_CURRENT }, (tab) => {
+            chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, (tab) => {
+                console.log(tab)
                 chrome.tabs.sendMessage(tab[0].id, { message: "getSelection" }, (response) => {
+                    console.log(response)
                     if (response && response.data) {
                         this.bookmark.clipping = response.data;
                     } else {
@@ -87,15 +91,19 @@ var app = new Vue({
         openBookmarks() {
             chrome.tabs.create({url: chrome.extension.getURL('src/bg/background.html')});
         },
+        sanitizeUrl(url) {
+            return url.split("#")[0]
+            // return url[0]
+        },
         saveBookmark() {
             if (!this.bookmark.url) {
                 this.message = "URL is a required field."
                 return
             }
 
-            let url = this.bookmark.url.split("#")
-            this.bookmark.bookmark_id = md5(url[0])
-            this.bookmark.url = url[0]
+            // let url = this.bookmark.url.split("#")
+            // this.bookmark.bookmark_id = md5(url[0])
+            // this.bookmark.url = url[0]
 
             console.log(this.bookmark)
 

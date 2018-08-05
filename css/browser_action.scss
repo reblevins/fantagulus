@@ -13,7 +13,7 @@ $borderRadius: 4px;
 
     &.bookmarks {
         margin: 0 auto;
-        width: 60%;
+        width: 70%;
     }
 }
 h1 {
@@ -34,7 +34,7 @@ h4 {
     margin-bottom: 4px;
     font-size: 0.8em;
     span {
-        color: #aaa;
+        // color: #aaa;
     }
 }
 .pointer {
@@ -129,15 +129,23 @@ ul {
 li.bookmark {
     position: relative;
     display: grid;
-    grid-template-columns: 2fr 5fr 0.5fr;
+    grid-template-columns: 3fr 3fr 0.5fr;
     align-items: center;
     margin: 1em 0;
     border: 1px solid lightgray;
     border-radius: 4px;
     padding: 1.2em;
     background: #f7f7f7;
+    max-height: 2em;
+    grid-column-gap: 1em;
 
     h4 { margin: 0; }
+    h4, a {
+        max-height: 1.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .controls svg {

@@ -29,6 +29,12 @@ chrome.runtime.onConnect.addListener(port => {
 				port.postMessage({ bookmarks: bookmarks })
 			})
 		}
+		if (obj.msg == 'get_bookmark') {
+			let bookmark = db.bookmarks.get({ url: obj.bookmark.url }).then(bookmark => {
+				console.log(bookmark)
+				port.postMessage({ bookmark: bookmark })
+			})
+		}
 		if (obj.msg == 'put') {
 			let bookmark = obj.bookmark
 			if (bookmark.bookmarkId) {
