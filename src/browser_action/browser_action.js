@@ -8,7 +8,7 @@ var app = new Vue({
                 { name: 'tag' }
             ],
             title: null,
-            clipping: null
+            clippings: []
         },
         bookmarks: [],
         newTag: {

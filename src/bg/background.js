@@ -9,6 +9,16 @@ db.version(1).stores({
     bookmarks: `++bookmarkId, *tags, title, &url, dateCreated`
 })
 
+db.version(2).stores({
+    bookmarks: `++bookmarkId, *tags, title, &url, dateCreated`
+}).upgrade(transaction => {
+	return transaction.bookmarks.toCollection().modify(bookmark => {
+		bookmark.clippings = []
+		bookmark.clippings.push(bookmark.clipping)
+		delete bookmark.clipping
+	})
+})
+
 chrome.runtime.onInstalled.addListener(() => {
 	console.log("Ready!")
 
@@ -92,35 +102,138 @@ var app = new Vue({
 	el: '#app',
     data: {
     	db: db,
-        bookmark: {
-            // bookmarkId: null,
-            url: document.location.url,
-            tags: [
-                { name: 'tag' }
-            ],
-            title: null,
-            clipping: null
-        },
+        bookmark: null,
+        bookmarkCopy: {},
+        bookmarkOriginal: {},
+        confirmCancel: false,
+        editingMessage: null,
         bookmarks: [],
         newTag: {
             name: null
         },
+        newClipping: null,
+        editingNewClipping: false,
         message: null,
         port: null,
         confirmDelete: null,
+        editing: false,
+        confirmDeleteClipping: null,
+        editingClipping: null,
+        clippingOriginal: null
     },
     created() {
-    	db.bookmarks.toArray().then(bookmarks => {
-			this.bookmarks = bookmarks
-		})
+    	this.fetchData()
+    },
+    watch: {
+    	editingMessage(newVal) {
+    		if (newVal) {
+    			setTimeout(() => {
+    				this.editingMessage = null
+    			}, 3000)
+    		}
+    	}
+    },
+    computed: {
+    	bookmarkChanged() {
+    		return changed(this.bookmarkOriginal, this.bookmarkCopy)
+    	}
     },
     methods: {
-    	editBookmark(bookmark) {
-    		this.bookmark = bookmark
+    	fetchData() {
+    		db.bookmarks.toArray().then(bookmarks => {
+    			// console.log(bookmarks)
+				this.bookmarks = bookmarks
+
+				if (this.bookmark != null) {
+					console.log(this.bookmark, this.bookmarks[this.bookmark])
+					this.bookmarkOriginal = copy(this.bookmarks[this.bookmark])
+	            	this.bookmarkCopy = copy(this.bookmarks[this.bookmark])
+				}
+			})
+    	},
+    	openBookmark(bookmark) {
+    		// this.bookmark = bookmark
+    	},
+    	editBookmark(index) {
+    		this.editing = true
+    		this.bookmark = index
+    		console.log(this.bookmark)
+    		this.bookmarkCopy = copy(this.bookmarks[index])
+    		this.bookmarkOriginal = copy(this.bookmarks[index])
+    	},
+    	cancelEditBookmark() {
+    		if (changed(this.bookmark, this.bookmarkCopy)) {
+    			this.confirmCancel = true
+    		}
     	},
     	deleteBookmark(bookmark) {
     		console.log("deleteBookmark")
     		console.log(bookmark)
-    	}
+    	},
+    	addTag: function() {
+            this.bookmarkCopy.tags.push(this.newTag)
+            this.newTag = { name: null }
+        },
+        removeTag(index) {
+            this.bookmarkCopy.tags.splice(index, 1)
+        },
+    	saveNewClipping() {
+    		this.bookmarkCopy.clippings.push(copy(this.newClipping))
+    		console.log(this.bookmarkCopy.clippings)
+    		this.newClipping = null
+    		this.editingNewClipping = false
+    		this.saveBookmark()
+    	},
+    	editClipping(index) {
+    		this.editingClipping = index
+    		this.clippingOriginal = this.bookmarkCopy[index]
+    	},
+    	cancelEditClipping(index) {
+    		this.bookmarkCopy = this.clippingOriginal
+    		this.editingClipping = null
+    	},
+    	saveClipping(index, clipping) {
+    		this.editingClipping = null
+    		this.bookmarkCopy.clippings[index] = clipping
+    		this.saveBookmark()
+    	},
+    	deleteClipping(index) {
+    		this.bookmarkCopy.clippings.splice(index, 1)
+    		this.confirmDeleteClipping = null
+    		this.saveBookmark()
+    	},
+    	discardBookmarkChanges() {
+    		// this.bookmark = copy(this.bookmarkCopy)
+    		this.resetBookmark()
+    	},
+		saveBookmark() {
+            if (!this.bookmarkCopy.url) {
+                this.editingMessage = "URL is a required field."
+                return
+            }
+
+            let url = this.bookmarkCopy.url.split("#")
+            this.bookmarkCopy.url = url[0]
+
+            console.log(this.bookmarkCopy)
+
+            db.bookmarks.put(this.bookmarkCopy).then(() => {
+            	// this.resetBookmark()
+	            this.fetchData()
+	            this.editingMessage = "Bookmark saved!"
+            })
+        },
+        resetBookmark() {
+        	this.editing = false
+    		this.confirmCancel = false
+    		this.confirmDeleteClipping = null
+    		this.bookmark = null
+	        this.bookmarkCopy = this.bookmarkOriginal = {
+	            url: null,
+	            tags: [],
+	            title: null,
+	            clippings: []
+	        }
+        }
     }
 })
