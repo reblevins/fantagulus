@@ -20,11 +20,16 @@
     </div>
 
     <h4>Clipping</h4>
-    <textarea v-model="bookmark.clipping"></textarea>
-    <div class="button" @click="pasteSelection">Get clipping</div>
-    <div class="button" @click="saveBookmark">Save Bookmark</div>
-
-    <div class="button" @click="openBookmarks">My Bookmarks</div>
+    <textarea v-for="(clipping, index) in bookmark.clippings" v-model="bookmark.clippings[index]"></textarea>
+    <textarea v-model="newClipping"></textarea>
+    <div class="button button-small" @click="saveNewClipping" v-if="newClipping != null">Save</div>
+    <div class="button button-small disabled" v-else>Save</div>
+    <div class="button button-small danger" @click="newClipping = null" v-if="newClipping != null">Cancel</div>
+    <div class="popup controls">
+        <div class="button" @click="pasteSelection">Get clipping</div>
+        <div class="button" @click="saveBookmark">Save Bookmark</div>
+        <div class="button" @click="openBookmarks">My Bookmarks</div>
+    </div>
 
     <transition name="fade">
         <div class="message" v-if="message"><span>{{ message }}</span></div>

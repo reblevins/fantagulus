@@ -40,28 +40,38 @@ chrome.runtime.onConnect.addListener(port => {
 			})
 		}
 		if (obj.msg == 'get_bookmark') {
-			let bookmark = db.bookmarks.get({ url: obj.bookmark.url }).then(bookmark => {
-				console.log(bookmark)
-				port.postMessage({ bookmark: bookmark })
+			let bookmark = db.bookmarks.get({ url: obj.url }).then(bookmark => {
+				if (bookmark)
+					port.postMessage({ bookmark: bookmark })
 			})
 		}
 		if (obj.msg == 'put') {
 			let bookmark = obj.bookmark
-			if (bookmark.bookmarkId) {
-				console.log("bookmarkId present")
-				db.bookmarks.put(bookmark, bookmark.bookmarkId).then(() => {
-					db.bookmarks.toArray().then(bookmarks => {
-						port.postMessage({ bookmarks: bookmarks })
-					})
-				})
-			} else {
+			// if (bookmark.bookmarkId) {
+				// console.log("bookmarkId present")
 				db.bookmarks.put(bookmark).then(() => {
-					db.bookmarks.toArray().then(bookmarks => {
-						port.postMessage({ bookmarks: bookmarks })
-					})
+					if (obj.origin) {
+						db.bookmarks.toArray().then(bookmarks => {
+							port.postMessage({ bookmarks: bookmarks })
+						})
+					}
 				})
-			}
+			// } else {
+			// 	db.bookmarks.put(bookmark).then(() => {
+			// 		db.bookmarks.toArray().then(bookmarks => {
+			// 			port.postMessage({ bookmarks: bookmarks })
+			// 		})
+			// 	})
+			// }
 		}
+		// if (obj.message == 'ready' && obj.url) {
+		// 	console.log(obj)
+		// 	let bookmark = db.bookmarks.get({ url: obj.url }).then(bookmark => {
+		// 		console.log(bookmark)
+		// 		if (bookmark)
+		// 			port.postMessage({ bookmark: bookmark })
+		// 	})
+		// }
 	})
 })
 

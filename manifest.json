@@ -33,17 +33,8 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "css": [
-        "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
-      ],
+      "matches": ["*://*/*"],
+      "css": ["src/inject/inject.css"],
       "js": [
         "src/inject/inject.js"
       ]

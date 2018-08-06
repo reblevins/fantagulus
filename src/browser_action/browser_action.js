@@ -15,7 +15,8 @@ var app = new Vue({
             name: null
         },
         message: null,
-        port: null
+        port: null,
+        newClipping: null
     },
     created() {
         // chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -53,7 +54,7 @@ var app = new Vue({
             this.bookmark.url = this.sanitizeUrl(tabs[0].url)
             this.bookmark.title = tabs[0].title
 
-            this.port.postMessage({ msg: "get_bookmark", bookmark: this.bookmark })
+            this.port.postMessage({ msg: "get_bookmark", url: this.bookmark.url })
         });
     },
     watch: {
@@ -81,7 +82,7 @@ var app = new Vue({
                 chrome.tabs.sendMessage(tab[0].id, { message: "getSelection" }, (response) => {
                     console.log(response)
                     if (response && response.data) {
-                        this.bookmark.clipping = response.data;
+                        this.bookmark.clippings.push(response.data)
                     } else {
                         this.message = "Please make a selection first."
                     }
@@ -95,6 +96,10 @@ var app = new Vue({
             return url.split("#")[0]
             // return url[0]
         },
+        saveNewClipping() {
+            this.bookmark.clippings.push(this.newClipping)
+            this.newClipping = null
+        },
         saveBookmark() {
             if (!this.bookmark.url) {
                 this.message = "URL is a required field."
@@ -107,7 +112,7 @@ var app = new Vue({
 
             console.log(this.bookmark)
 
-            this.port.postMessage({ msg: 'put', bookmark: this.bookmark })
+            this.port.postMessage({ msg: 'put', origin: 'popup', bookmark: this.bookmark })
 
             // chrome.storage.sync.get({ key: value }, function() {
             //     console.log('Value is set to ' + value);
