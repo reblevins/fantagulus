@@ -135,14 +135,19 @@ ul {
 li.bookmark {
     position: relative;
     display: grid;
-    grid-template-columns: 3fr 3fr 0.5fr;
+    grid-template-columns: 1fr 1fr 0.5fr;
     align-items: center;
     margin: 0;
-    border-bottom: 1px solid lightgray;
-    padding: 0.8em 0;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 1.1rem 0;
     // background: #f7f7f7;
     max-height: 2em;
+    min-height: 1.5em;
     grid-column-gap: 1em;
+
+    span.controls { display: none; }
+
+    &:hover { background: #f5f8fc; span.controls { display: inline-block; } }
 
     h4 { margin: 0; }
     h4, .url {
