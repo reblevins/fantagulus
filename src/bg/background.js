@@ -179,6 +179,12 @@ var app = new Vue({
     	deleteBookmark(bookmark) {
     		console.log("deleteBookmark")
     		console.log(bookmark)
+            db.transaction("rw", db.bookmarks, () => {
+                db.bookmarks.delete(bookmark.bookmarkId).then(() => {
+                    this.confirmDelete = null
+                    this.fetchData()
+                })
+            })
     	},
     	addTag: function() {
             this.bookmarkCopy.tags.push(this.newTag)
