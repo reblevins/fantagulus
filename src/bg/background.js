@@ -52,7 +52,8 @@ chrome.runtime.onConnect.addListener(port => {
 				db.bookmarks.put(bookmark).then(() => {
 					if (obj.origin) {
 						db.bookmarks.toArray().then(bookmarks => {
-							port.postMessage({ bookmarks: bookmarks })
+                            // port.postMessage({ bookmarks: bookmarks })
+							port.postMessage({ msg: 'bookmark_saved' })
 						})
 					}
 				})

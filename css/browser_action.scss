@@ -1,6 +1,8 @@
 /*use-itty-bitty-template*/
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 $borderRadius: 4px;
+$tagColor: #F72459;
+$clippingColor: #21e09e;
 
 #mainPopup {
     width: 620px;
@@ -21,7 +23,7 @@ $borderRadius: 4px;
 }
 h1 { &.title { display: inline-block; margin-right: 1em; } }
 h1 span {
-    color: #F72459;
+    color: $tagColor;
 }
 h3, h4 {
     text-transform: uppercase;
@@ -82,7 +84,8 @@ textarea {
     .tag {
         display: inline-block;
         color: white;
-        background: #21e09e;
+        // background: #21e09e;
+        background: $tagColor;
         padding: 3px 5px;
         margin: 2px 2px;
         top: 6px;
@@ -135,11 +138,11 @@ ul {
 li.bookmark {
     position: relative;
     display: grid;
-    grid-template-columns: 1fr 1fr 0.5fr;
+    grid-template-columns: 2fr 2fr 30px 30px 45px;
     align-items: center;
     margin: 0;
     border-bottom: 1px solid #e6e6e6;
-    padding: 1.1rem 0;
+    padding: 17px;
     // background: #f7f7f7;
     max-height: 2em;
     min-height: 1.5em;
@@ -147,7 +150,20 @@ li.bookmark {
 
     span.controls { display: none; }
 
-    &:hover { background: #f5f8fc; span.controls { display: inline-block; } }
+    .tag-count svg,
+    .clipping-count svg {
+        color: #909090;
+        transition: color 0.3s ease;
+    }
+
+    &:hover {
+        background: #f5f8fc;
+        // padding: 18px 17px 16px 17px;
+        span.controls { display: inline-block; }
+
+        .tag-count svg { color: $tagColor; }
+        .clipping-count svg { color: $clippingColor; }
+    }
 
     h4 { margin: 0; }
     h4, .url {
@@ -155,6 +171,10 @@ li.bookmark {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    .url {
+        max-width: 100%;
+        display: inline-block;
     }
 }
 
@@ -196,7 +216,7 @@ li.bookmark {
 span.confirm-delete {
     position: absolute;
     border-radius: 4px;
-    max-width: 40%;
+    width: 23em;
     min-width: 23em;
     background: rgb(247, 247, 247);
     height: 100%;

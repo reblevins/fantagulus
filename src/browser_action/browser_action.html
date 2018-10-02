@@ -31,6 +31,8 @@
         <div class="button" @click="openBookmarks">My Bookmarks</div>
     </div>
 
+    <div class="message saving" v-if="saving">Saving...</div>
+
     <transition name="fade">
         <div class="message" v-if="message"><span>{{ message }}</span></div>
     </transition>

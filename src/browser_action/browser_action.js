@@ -14,6 +14,7 @@ var app = new Vue({
         newTag: {
             name: null
         },
+        saving: false,
         message: null,
         port: null,
         newClipping: null
@@ -43,7 +44,9 @@ var app = new Vue({
                 console.log(this.bookmarks)
             }
             if (obj.msg == 'bookmark_saved') {
-
+                console.log('bookmark_saved')
+                this.saving = false
+                this.message = 'Bookmark saved'
             }
             if (obj.bookmark) {
                 this.bookmark = obj.bookmark
@@ -112,6 +115,7 @@ var app = new Vue({
 
             console.log(this.bookmark)
 
+            this.saving = true
             this.port.postMessage({ msg: 'put', origin: 'popup', bookmark: this.bookmark })
 
             // chrome.storage.sync.get({ key: value }, function() {

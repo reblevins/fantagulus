@@ -9,7 +9,7 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://unpkg.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://unpkg.com https://use.fontawesome.com; object-src 'self'",
   "default_locale": "en",
   "background": {
     "page": "src/bg/background.html",

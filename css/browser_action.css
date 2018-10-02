@@ -3,39 +3,48 @@
 #mainPopup {
   width: 620px;
   height: 500px;
-  font-family: 'Rubik', sans-serif; }
+  font-family: "Rubik", sans-serif;
+}
 
 #app {
   position: relative;
-  margin: 1em; }
-  #app.bookmarks {
-    margin: 0 auto;
-    width: 80%; }
+  margin: 1em;
+}
+#app.bookmarks {
+  margin: 0 auto;
+  width: 80%;
+}
 
 [v-cloak] {
-  display: none; }
+  display: none;
+}
 
 h1.title {
   display: inline-block;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
 h1 span {
-  color: #F72459; }
+  color: #F72459;
+}
 
 h3, h4 {
   text-transform: uppercase;
   color: #666;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+}
 
 h3.sub-title {
-  display: inline-block; }
+  display: inline-block;
+}
 
 h4 {
   margin-bottom: 4px;
-  font-size: 0.8em; }
-
+  font-size: 0.8em;
+}
 .pointer {
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 input.text, textarea {
   outline: none;
@@ -44,12 +53,14 @@ input.text, textarea {
   border: 1px solid lightgray;
   min-height: 1.78em;
   display: block;
-  width: 95%; }
+  width: 95%;
+}
 
 textarea {
   margin: 0 0 1em 0;
   width: 96%;
-  min-height: 7em; }
+  min-height: 7em;
+}
 
 .button {
   cursor: pointer;
@@ -58,38 +69,46 @@ textarea {
   text-transform: uppercase;
   display: inline-block;
   padding: 0.6em;
-  border-radius: 4px; }
-  .button.danger {
-    background: #F72459; }
-  .button.disabled {
-    background: lightgray; }
+  border-radius: 4px;
+}
+.button.danger {
+  background: #F72459;
+}
+.button.disabled {
+  background: lightgray;
+}
 
 .button-small {
   font-size: 0.8em;
   min-width: 4em;
-  text-align: center; }
+  text-align: center;
+}
 
 .tags-input {
   width: 97%;
   padding: 5px;
-  border: 1px solid lightgray; }
-  .tags-input .tag {
-    display: inline-block;
-    color: white;
-    background: #21e09e;
-    padding: 3px 5px;
-    margin: 2px 2px;
-    top: 6px;
-    border-radius: 4px; }
-  .tags-input .remove {
-    font-size: 14px;
-    display: inline-block;
-    margin-top: -10px;
-    cursor: pointer; }
-  .tags-input input {
-    padding: 6px;
-    border: none;
-    outline: none; }
+  border: 1px solid lightgray;
+}
+.tags-input .tag {
+  display: inline-block;
+  color: white;
+  background: #F72459;
+  padding: 3px 5px;
+  margin: 2px 2px;
+  top: 6px;
+  border-radius: 4px;
+}
+.tags-input .remove {
+  font-size: 14px;
+  display: inline-block;
+  margin-top: -10px;
+  cursor: pointer;
+}
+.tags-input input {
+  padding: 6px;
+  border: none;
+  outline: none;
+}
 
 .message {
   position: absolute;
@@ -99,72 +118,110 @@ textarea {
   background: rgba(255, 255, 255, 0.7);
   display: grid;
   justify-items: center;
-  align-items: center; }
-  .message span {
-    background: #21e09e;
-    padding: 1em;
-    color: white;
-    border-radius: 4px; }
+  align-items: center;
+}
+.message span {
+  background: #21e09e;
+  padding: 1em;
+  color: white;
+  border-radius: 4px;
+}
 
 .controls.popup {
-  margin: 1em 0; }
+  margin: 1em 0;
+}
 
 /********************/
 /*  Bookmarks        /
 /********************/
 ul {
-  padding: 0; }
+  padding: 0;
+}
 
 li.bookmark {
   position: relative;
   display: grid;
-  grid-template-columns: 3fr 3fr 0.5fr;
+  grid-template-columns: 2fr 2fr 30px 30px 45px;
   align-items: center;
   margin: 0;
-  border-bottom: 1px solid lightgray;
-  padding: 0.8em 0;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 17px;
   max-height: 2em;
-  grid-column-gap: 1em; }
-  li.bookmark h4 {
-    margin: 0; }
-  li.bookmark h4, li.bookmark .url {
-    max-height: 1.2em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
+  min-height: 1.5em;
+  grid-column-gap: 1em;
+}
+li.bookmark span.controls {
+  display: none;
+}
+li.bookmark .tag-count svg,
+li.bookmark .clipping-count svg {
+  color: #909090;
+  transition: color 0.3s ease;
+}
+li.bookmark:hover {
+  background: #f5f8fc;
+}
+li.bookmark:hover span.controls {
+  display: inline-block;
+}
+li.bookmark:hover .tag-count svg {
+  color: #F72459;
+}
+li.bookmark:hover .clipping-count svg {
+  color: #21e09e;
+}
+li.bookmark h4 {
+  margin: 0;
+}
+li.bookmark h4, li.bookmark .url {
+  max-height: 1.2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+li.bookmark .url {
+  max-width: 100%;
+  display: inline-block;
+}
 
 .clippings {
   list-style-type: none;
-  margin-top: 0; }
-  .clippings li {
-    border: 1px solid lightgray;
-    border-radius: 4px;
-    padding: 1em;
-    background: #f7f7f7;
-    margin-bottom: 1em;
-    position: relative; }
-    .clippings li .controls {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      margin: 0;
-      background: white;
-      padding: 0.5em;
-      border-radius: 0 5px 0 5px; }
-    .clippings li:hover .controls {
-      display: block; }
+  margin-top: 0;
+}
+.clippings li {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding: 1em;
+  background: #f7f7f7;
+  margin-bottom: 1em;
+  position: relative;
+}
+.clippings li .controls {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  background: white;
+  padding: 0.5em;
+  border-radius: 0 5px 0 5px;
+}
+.clippings li:hover .controls {
+  display: block;
+}
 
 .controls svg {
   height: 15px;
-  margin-right: 3px; }
-  .controls svg path {
-    fill: #666; }
+  margin-right: 3px;
+}
+.controls svg path {
+  fill: #666;
+}
 
 span.confirm-delete {
   position: absolute;
   border-radius: 4px;
-  max-width: 40%;
+  width: 23em;
   min-width: 23em;
   background: #f7f7f7;
   height: 100%;
@@ -174,12 +231,15 @@ span.confirm-delete {
   align-items: center;
   justify-items: right;
   grid-template-columns: 6fr 1fr 1fr;
-  grid-gap: 0.5em; }
+  grid-gap: 0.5em;
+}
 
 .edit-bookmark {
-  width: 100%; }
-  .edit-bookmark .controls {
-    margin: 1em 0; }
+  width: 100%;
+}
+.edit-bookmark .controls {
+  margin: 1em 0;
+}
 
 .edit-dialog {
   position: absolute;
@@ -191,23 +251,26 @@ span.confirm-delete {
   display: grid;
   align-items: center;
   justify-items: center;
-  border-radius: 4px; }
+  border-radius: 4px;
+}
 
 .editing-message {
-  margin-left: 1em; }
+  margin-left: 1em;
+}
 
 span.confirm-delete-clipping {
   position: absolute;
   right: 0;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
 /********************/
 /*  Transitions      /
 /********************/
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .4s; }
+  transition: opacity 0.4s;
+}
 
 .fade-enter, .fade-leave-to {
-  opacity: 0; }
-
-/*# sourceMappingURL=browser_action.css.map */
+  opacity: 0;
+}
